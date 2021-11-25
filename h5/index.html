@@ -1,0 +1,94 @@
+<html>
+<body>
+<label></label>
+<h1 ng-bind="num"></h1>
+<label></label>
+<input id="text"/>
+<table id="producttable">
+  <thead>
+  <tr>
+    <td>UPC_Code</td>
+    <td>Product_Name</td>
+  </tr>
+  </thead>
+  <tbody>
+  <!-- 现有数据可以可选地包括在这里 -->
+  <tr ng-repeat="record in recordList" >
+    <td class="record"></td>
+    <td></td>
+  </tr>
+  </tbody>
+</table>
+<script>
+    //实际数据
+    let scope = {
+        num: 0
+    };
+
+    //缓存
+    let watchers = {};
+
+    //绑定从dom到js
+    document.addEventListener('DOMCharacterDataModified', element,false);
+    //绑定：从js到dom
+    watch(scope);
+    scope.num = 2; // set:2
+    console.log(scope.num); // get：2
+
+
+    //绑定变量
+    function watch(scope){
+        const propertys = Object.keys(scope);
+
+        propertys.forEach(function (prop){
+            //console.log(prop);
+            //不处理函数属性
+            if( 'function' == typeof scope[prop] ) return;
+
+            const propName = prop;
+            console.log(propName, scope[prop]);
+            //监听对象属性
+            Object.defineProperty(scope, prop, {
+                //value: scope[prop],
+                configurable: true,
+                get: function() {
+                    //scope[property]会导致栈溢出，因为一直递归（Uncaught RangeError: Maximum call stack size exceeded）
+                    //console.log('get', prop, 'for', propName);
+                    return watchers[propName];
+                },
+                set: function(value) {
+                    //scope[property]会导致栈溢出，因为一直递归（Uncaught RangeError: Maximum call stack size exceeded）
+                    //console.log('set', prop, 'for', propName);
+                    //防止递归导致的栈溢出，先去掉监听的函数
+                    document.removeEventListener('DOMCharacterDataModified', element);
+                    watchers[prop] = value;
+                    document.querySelector("*[ng-bind='"+prop+"']").innerText = watchers[prop];
+                    //重新监听
+                    document.addEventListener('DOMCharacterDataModified', element,false);
+                }
+            });
+        });
+    }
+
+    //dom的修改触发JS变量的修改
+    function element(e){
+        console.log(e.newValue, e.prevValue, e.path);
+        const attrs = e.target.parentElement.attributes;
+        for(let i=0; i<attrs.length; i++){
+            const attr = attrs[i];
+            if('ng-bind' === attr.nodeName){
+                console.log('ng-bind', scope[attr.nodeValue]);
+                scope[attr.nodeValue] = e.newValue;
+            }
+        }
+    }
+</script>
+<script>
+    document.getElementById('text').oninput = function(e){
+        const v = document.getElementById("text").value;
+        const prop = 'num';
+        document.querySelector("*[ng-bind='"+prop+"']").innerText = v;
+    }
+</script>
+</body>
+</html>

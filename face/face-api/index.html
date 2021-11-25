@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2018. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>人脸检测demo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/materialize.css">
+    <style>
+        body{
+            margin: 0 5vw;
+        }
+        .panel{
+            position: relative;
+        }
+        .panel > #overlay{
+            position: absolute;
+            top:0;
+            left:0;
+        }
+        .panel > #img{
+            position: relative;
+            left: 4vw;
+        }
+        .row{
+            margin-left: 0;
+        }
+        .derection_result{
+
+        }
+    </style>
+</head>
+<body>
+<h3>人脸检测demo</h3>
+<div class="row side-by-side">
+    <div class="row">
+        <label for="info" class="active">Info:</label>
+        <input id="info" type="text" class="bold" disabled>
+    </div>
+    <div class="row">
+        <label for="remote" class="active">Info:</label>
+        <input id="remote" type="text" class="bold">
+    </div>
+    <button class="waves-effect waves-light btn" onclick="snapshot()">
+        截图
+    </button>
+    <button class="waves-effect waves-light btn" onclick="startRecognitionByPicture()" disabled>
+        图片识别
+    </button>
+</div>
+<div class="row side-by-side">
+    <div class="row">
+        <label for="status" class="active">State:</label>
+        <input id="status" type="text" class="bold" disabled>
+    </div>
+    <button class="waves-effect waves-light btn" onclick="snapshot()">
+        截图
+    </button>
+    <button class="waves-effect waves-light btn" onclick="startDerectionByPicture()">
+        图片检测
+    </button>
+    <button class="waves-effect waves-light btn" onclick="startFace()">
+        开始(视频)检测
+    </button>
+    <button class="waves-effect waves-light btn" onclick="stopFace()">
+        停止(视频)检测
+    </button>
+</div>
+<div class="row side-by-side">
+    <button class="waves-effect waves-light btn" onclick="showDerections()">
+        显示(图片)检测结果
+    </button>
+    <button class="waves-effect waves-light btn" onclick="downloadPicture()">
+        下载(图片)检测结果
+    </button>
+</div>
+<div class="row side-by-side">
+    <div class="row">
+        <label for="minConfidence" class="active">Min Confidence:</label>
+        <input disabled="" value="0.1" id="minConfidence" type="text" class="bold">
+    </div>
+    <button class="waves-effect waves-light btn" onclick="onDecreaseThreshold()">
+        <i class="material-icons left">-</i>
+    </button>
+    <button class="waves-effect waves-light btn" onclick="onIncreaseThreshold()">
+        <i class="material-icons left">+</i>
+    </button>
+</div>
+<div class="panel">
+    <video autoplay muted id="inputVideo"></video>
+    <canvas id="overlay" ></canvas>
+    <canvas id="img" ></canvas>
+</div>
+<div>
+    <p>attention:</p>
+    <p>1.此处使用requestAnimationFrame刷新canvas，每秒60次，占用内存高</p>
+    <p>2.在移动端上demo无效</p>
+</div>
+<div class="row side-by-side" id="derectionResults">
+    <div class="row">
+    </div>
+</div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/face-api.js"></script>
+<script src="js/commons.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>
