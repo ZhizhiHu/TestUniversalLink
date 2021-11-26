@@ -1,0 +1,19 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+                        {
+                "appID": "AMJJYPV58W.com.cjsc.cjej",
+                "paths": ["/cjmobile/*","/qq_conn/1105257658/*"]
+            },
+            	   {
+                "appID": "AMJJYPV58W.com.cjsc.iNumberE",
+                "paths": ["/cjeh/*"]
+            },
+	   {
+                "appID": "7QDL3JC2DV.com.cjsc.iNumberE",
+                "paths": ["/cjeh/*"]
+            }
+        ]
+    }
+}
